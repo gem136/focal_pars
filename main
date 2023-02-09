@@ -1,0 +1,378 @@
+import os
+
+import item as item
+import keyboard
+import self as self
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from auth_data import username, password, text_for_search, hashtag
+import time
+import random
+
+chars = ['https://www.instagram.com/?next=%2F',
+         'https://www.instagram.com/explore/tags/%D0%B2%D0%BE%D0%BA%D0%B0%D0%BB%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0'
+         '/?next=%2F',
+         'https://www.instagram.com/explore/locations/104185038857646/?next=%2F',
+         'https://www.instagram.com/explore/tags/%D0%B2%D0%BE%D0%BA%D0%B0%D0%BB%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0'
+         '%D0%B4%D0%B5%D1%82%D0%B8/?next=%2F',
+         'https://www.instagram.com/direct/inbox/?next=%2F', 'https://www.instagram.com/explore/?next=%2F',
+         'https://www.instagram.com/accounts/activity/', 'https://about.meta.com/', 'https://about.instagram.com/',
+         'https://about.instagram.com/blog/', 'https://www.instagram.com/about/jobs/?next=%2F',
+         'https://help.instagram.com/', 'https://developers.facebook.com/docs/instagram',
+         'https://www.instagram.com/legal/privacy/?next=%2F', 'https://www.instagram.com/legal/terms/?next=%2F',
+         'https://www.instagram.com/directory/profiles/?next=%2F',
+         'https://www.instagram.com/directory/hashtags/?next=%2F',
+         'https://www.instagram.com/explore/locations/?next=%2F', 'https://www.instagram.com/web/lite/?next=%2F',
+         'https://l.instagram.com/?u=https%3A%2F%2Fwww.facebook.com%2Fhelp%2Finstagram%2F261704639352628%3Fnext%3D'
+         '%252F&e=AT03mSUeEIDVjzdND8UWWNYsXImV6deCuw9mQIOWKo_MXsHLEuwWPjzY8rlqVnWbxRPqrx9tXT4ed7udMj4vJpmFto'
+         '-8ZyleXJ87vBnmzeheHLSkX-hLZXVOHkbXJHZgJiuuvi_Je5UXRd0P3LSrLA',
+         'https://www.instagram.com/legal/privacy/?next=%2F',
+         'https://l.instagram.com/?u=https%3A%2F%2Fwww.facebook.com%2Fhelp%2Finstagram%2F261704639352628%3Fnext%3D'
+         '%252F&e=AT3WNKpAk5'
+         '-VlWxcxcMT1t1C7oZYK0z1HpJUiVcA6sDGwaFoabDeCqgHLgxqKAR3SfGlZu26xw9CuUyjj6iSJbeuO4xfd1VbhwX8zTzW8Nr5Q6K0FI3GHpKLf_NT5b7Bj0PJSf6zX6jTBeQxx2VqOw']
+
+
+def login(username, password):  # //Функция для вхождения в инстаграмм
+    browser = webdriver.Chrome(ChromeDriverManager().install())  # //Подключение к webdriver chrome
+    try:  # //Пробуем перейти по ссылке
+        browser.get('https://www.kinopoisk.ru/special/birthday19/') # //Переходим по ссылке
+        time.sleep(random.randrange(2, 3))
+
+
+        try:
+            close_button = browser.find_element(By.XPATH, "/html/body/div[4]/div/div/button[1]") # //Соглашаемся с куки файлами
+            close_button.click()
+        except:
+            pass
+
+        time.sleep(random.randrange(3, 5))
+
+        username_input = browser.find_element(By.NAME, "username")
+        username_input.clear()
+        username_input.send_keys(username)
+
+        time.sleep(2)
+
+        password_input = browser.find_element(By.NAME, "password")
+        password_input.clear()
+        password_input.send_keys(password)
+
+        password_input.send_keys(Keys.ENTER)
+        time.sleep(random.randrange(9, 11))
+        try:
+            username_input = browser.find_element(By.NAME, "username")
+            username_input.clear()
+            username_input.send_keys(username)
+
+            time.sleep(2)
+
+            password_input = browser.find_element(By.NAME, "password")
+            password_input.clear()
+            password_input.send_keys(password)
+
+            password_input.send_keys(Keys.ENTER)
+            time.sleep(random.randrange(9, 11))
+        except:
+            print("Ошибка")
+        try:
+            close_notification = browser.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[2]/div/div/div['
+                                                                '1]/div/div[2]/div/div/div/div/div[2]/div/div/div['
+                                                                '3]/button[2]')
+            close_notification.click() # // Выключает notification
+        except:
+            pass
+
+        # def xpath_exists(self, url):
+        #
+        #     browser = self.browser
+        #     try:
+        #         browser.find_element_by_xpath(url)
+        #         exist = True
+        #     except "NoSuchElementException":
+        #         exist = False
+        #     return exist
+
+        time.sleep(random.randrange(3, 5))
+
+        find_button = browser.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/div/div/div/div['
+                                                     '1]/section/nav/div[2]/div/div/div[2]/div[1]') # //Находим строку поиска
+        find_button.click()
+        time.sleep(random.randrange(2, 3))
+        keyboard.write("Вокал Москва", delay=random.randrange(0, 1))
+
+
+        time.sleep(random.randrange(4, 5))
+
+
+        hrefs = browser.find_elements(By.TAG_NAME, 'a')
+        posts_urls = [item.get_attribute('href') for item in hrefs]
+
+        time.sleep(random.randrange(6, 8))
+        print(len(hrefs))
+        print(hrefs)
+        print(len(posts_urls))
+        print(posts_urls)
+        new_post_urls = []
+
+        for i in range(len(posts_urls)):
+            if posts_urls[i] in chars:
+                pass
+            else:
+                new_post_urls.append(posts_urls[i])
+
+        for i in range(len(new_post_urls)):
+            print(new_post_urls[i])
+
+        for i in range(len(new_post_urls)):
+            browser.get(new_post_urls[i])
+
+            time.sleep(random.randrange(5, 8))
+
+            followers_button = browser.find_elements(By.TAG_NAME, "span")
+            time.sleep(random.randrange(5, 8))
+
+            for followers in range(len(followers_button)):
+                print(followers_button[i])
+
+            followers_count = [item.get_attribute('title') for item in followers_button]
+
+            print(followers_count)
+
+            new_followers_count = list(filter(None, followers_count))
+
+            # for i in range(len(followers_count)):
+            #     print(followers_count[i])
+            for value in new_followers_count:
+                result = ''.join(value.split(','))
+            i = 0
+            for value in new_followers_count:
+                if ',' in value:
+                    i += 1
+            if i > 0:
+                for value in new_followers_count:
+                    result = ''.join(value.split(','))
+            else:
+                for value in new_followers_count:
+                    result = ''.join(value)
+            result = int(result)
+
+            print(f"Количество подписчиков: {result}")
+            time.sleep(2)
+
+            loops_count = result / 12
+            print(f"Число итераций: {loops_count}")
+            time.sleep(4)
+
+            my_followers_button = browser.find_element(By.XPATH, '//li[2]//a[1]//div[1]')
+            my_followers_button.click()
+
+            time.sleep(5)
+
+            hrefs_profile = browser.find_elements(By.TAG_NAME, 'a')
+            posts_urls_profile = [item.get_attribute('href') for item in hrefs]
+            for i in posts_urls_profile:
+                print(posts_urls_profile[i])
+
+
+            time.sleep(100)
+
+
+
+            # followers_button = browser.find_elements(By.TAG_NAME, "span")
+            # print(type(followers_button))
+            # followers_count = [item.get_attribute('title') for item in followers_button]
+
+
+            # for value in followers_count:
+            #     if value != None:
+            #         my_followers_button = followers_button[i]
+            #     i += 1
+
+
+            followers_ul = browser.find_element(By.XPATH, "/html/body/div[4]/div/div/div[2]")
+
+            followers_urls = []
+            for i in range(1, loops_count + 1):
+                browser.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", followers_ul)
+                time.sleep(random.randrange(2, 4))
+                print(f"Итерация #{i}")
+
+            all_urls_div = followers_ul.find_elements(By.TAG_NAME, "li")
+
+            for url in all_urls_div:
+                url = url.find_element(By.TAG_NAME, "a").get_attribute("href")
+                followers_urls.append(url)
+
+            time.sleep(1000)
+
+        # time.sleep(2)
+        #
+        # browser.get(f'https://www.instagram.com/explore/tags/{hashtag}/')
+        # for i in range(1, 4):
+        #     browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        #     time.sleep(random.randrange(3, 5))
+        #
+        # hrefs = browser.find_elements(By.TAG_NAME, 'a')
+        # print(hrefs)
+        # posts_urls = [item.get_attribute('href') for item in hrefs if "/p/" in item.get_attribute('href')]
+        # print(posts_urls)
+        # for url in posts_urls:
+        #     browser.get(url)
+        #     time.sleep(4)
+        #     hrefs_profile = browser.find_element(By.XPATH,"//html/body/div[1]/div/div/div/div[1]/div/div/div/div["
+        #                                                   "1]/section/main/div[1]/div[1]/article/div/div[2]/div/div["
+        #                                                   "1]/div/header/div[2]/div[1]/div[1]/div")
+        #     hrefs_profile.click()
+        #     hrefs_profile.click()
+        #     time.sleep(10)
+        #     file_name = url.split("/")[-2]
+        #     if os.path.exists(f"{file_name}"):
+        #         print(f"Папка {file_name} уже существует!")
+        #     else:
+        #         print(f"Создаём папку пользователя {file_name}.")
+        #         os.mkdir(file_name)
+        #     wrong_userpage = "/html/body/div[1]/section/main/div/h2"
+        #     if browser.xpath_exists(wrong_userpage):
+        #         print(f"Пользователя {file_name} не существует, проверьте URL")
+        #         browser.close()
+        #     else:
+        #         print(f"Пользователь {file_name} успешно найден, начинаем скачивать ссылки на подписчиков!")
+        #         time.sleep(2)
+        #     followers_button = browser.find_element(By.XPATH,
+        #                                             "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div["
+        #                                             "1]/div[1]/div[1]/section[1]/main[1]/div[1]/ul[1]/li[2]/a[1]/div["
+        #                                             "1]/span[1]")
+        #     followers_count = followers_button.get_attribute('title')
+        # followers_count = followers_button.text
+        # followers_count = int(followers_count.split(' ')[0])
+
+        # если количество подписчиков больше 999, убираем из числа запятые
+        # if ',' in followers_count:
+        #     followers_count = int(''.join(followers_count.split(',')))
+        # else:
+        #     followers_count = int(followers_count)
+        #
+        # print(f"Количество подписчиков: {followers_count}")
+        # time.sleep(2)
+        #
+        # loops_count = int(followers_count / 12)
+        # print(f"Число итераций: {loops_count}")
+        # time.sleep(4)
+        #
+        # followers_ul = browser.find_element(By.XPATH,"/html/body/div[4]/div/div/div[2]")
+        #
+        # try:
+        #     followers_urls = []
+        #     for i in range(1, loops_count + 1):
+        #         browser.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", followers_ul)
+        #         time.sleep(random.randrange(2, 4))
+        #         print(f"Итерация #{i}")
+        #
+        #     all_urls_div = followers_ul.find_element(By.TAG_NAME, "li")
+        #     for url in all_urls_div:
+        #         url = url.find_element_by_tag_name("a").get_attribute("href")
+        #         followers_urls.append(url)
+        #         with open(f"{file_name}/{file_name}.txt", "a") as text_file:
+        #             for link in followers_urls:
+        #                 text_file.write(link + "\n")
+        #
+        #         with open(f"{file_name}/{file_name}.txt") as text_file:
+        #             users_urls = text_file.readlines()
+        #         browser.get(users_urls)
+        #
+        # except:
+        #     pass
+
+        # hrefs = browser.find_element(By.TAG_NAME, 'a').get_attribute('href')
+        # print(hrefs)
+        #
+        # # print(hrefs)
+        # time.sleep(1000)
+        # posts_urls = []
+
+        # find_button_search = browser.find_element(By.XPATH,"/html/body/div[1]/div/div/div/div[1]/div/div/div/div["
+        #                                                    "1]/section/nav/div[2]/div/div/div[2]/input")
+        # find_button.send_keys(text_for_search)
+
+        time.sleep(1000)
+
+        browser.close()
+        browser.quit()
+
+    except Exception as ex:
+        print(ex)
+        browser.close()
+        browser.quit()
+
+
+login(username, password)
+
+# def hashtag_search(username, password, hashtag):
+#     browser = webdriver.Chrome(ChromeDriverManager().install())
+#
+#     try:
+#         browser.get('https://www.instagram.com')
+#         time.sleep(random.randrange(3, 5))
+#
+#         username_input = browser.find_element(By.NAME, 'username')
+#         username_input.clear()
+#         username_input.send_keys(username)
+#
+#         time.sleep(2)
+#
+#         password_input = browser.find_element(By.NAME, 'password')
+#         password_input.clear()
+#         password_input.send_keys(password)
+#
+#         password_input.send_keys(Keys.ENTER)
+#         time.sleep(5)
+#
+#         try:
+#             browser.get(f'https://www.instagram.com/explore/tags/{hashtag}/')
+#             time.sleep(5)
+#
+#             for i in range(1, 4):
+#                 browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+#                 time.sleep(random.randrange(3, 5))
+#
+#             hrefs = browser.find_elements(By.TAG_NAME, 'a')
+#             posts_urls = [item.get_attribute('href') for item in hrefs if "/p/" in item.get_attribute('href')]
+#
+#             # posts_urls = []
+#             # for item in hrefs:
+#             #     href = item.get_attribute('href')
+#             #
+#             #     if "/p/" in href:
+#             #         posts_urls.append(href)
+#             #         print(href)
+#
+#             for url in posts_urls:
+#                 try:
+#                     browser.get(url)
+#                     time.sleep(4)
+#                     like_button = browser.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div['
+#                                                                  '1]/div/div/div/div[1]/section/main/div[1]/div['
+#                                                                  '1]/article/div/div[2]/div/div[2]/section[1]/span['
+#                                                                  '1]/button')
+#                     like_button.click()
+#                     time.sleep(random.randrange(80, 100))
+#                 except Exception as ex:
+#                     print(ex)
+#
+#             browser.close()
+#             browser.quit()
+#
+#         except Exception as ex:
+#             print(ex)
+#             browser.close()
+#             browser.quit()
+#
+#     except Exception as ex:
+#         print(ex)
+#         browser.close()
+#         browser.quit()
+#
+#
+# hashtag_search(username, password, 'surfing')
